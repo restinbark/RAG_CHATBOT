@@ -44,23 +44,21 @@ rag_chatbot/
 ├── setup_folders.py # Utility for folder setup
 ├── requirements.txt # Python dependencies
 ├── .gitignore
+├── assets/└── image.png
 └── README.md # You're here!
 
 
----
+---## 🧠 RAG Pipeline Overview
 
-## 🧠 RAG Pipeline Overview
+This chatbot follows a Retrieval-Augmented Generation (RAG) process:
 
-## 🧠 RAG Pipeline Overview
+![RAG Pipeline](./assets/image.png)
 
-```mermaid
-flowchart TD
-    A[User Enters Question] --> B[Embed Question (MiniLM)]
-    B --> C[Search FAISS Vector Store]
-    C --> D[Retrieve Top-k Complaint Chunks]
-    D --> E[Generate Answer with Flan-T5]
-    E --> F[Streamlit UI: Show Answer + Sources]
-```
+1. User enters a question in the UI  
+2. The question is embedded with MiniLM  
+3. FAISS retrieves top-k similar complaint chunks  
+4. Flan-T5 generates an answer based on context  
+5. Streamlit UI displays the result with sources
 
 
 🛠️ Setup & Run
