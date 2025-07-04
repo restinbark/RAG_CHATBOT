@@ -51,6 +51,8 @@ rag_chatbot/
 
 ## 🧠 RAG Pipeline Overview
 
+## 🧠 RAG Pipeline Overview
+
 ```mermaid
 flowchart TD
     A[User Enters Question] --> B[Embed Question (MiniLM)]
@@ -58,6 +60,8 @@ flowchart TD
     C --> D[Retrieve Top-k Complaint Chunks]
     D --> E[Generate Answer with Flan-T5]
     E --> F[Streamlit UI: Show Answer + Sources]
+```
+
 
 🛠️ Setup & Run
 1. Clone the repo
