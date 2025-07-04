@@ -42,20 +42,24 @@ Answer:"""
     result = model_pipeline(prompt)
     return result[0]['generated_text']
 
-def ask_question(question, index_path="vector_store/faiss_index"):
-    # Load FAISS index and metadata
+def ask_question(question, index_path="vector_store/faiss_index", product_filter="All"):
+    # Load vector store and metadata
     index, chunks = load_vector_store(index_path)
-
-    # Load embedding and generation models
     embed_model = SentenceTransformer('all-MiniLM-L6-v2')
     llm = pipeline("text2text-generation", model="google/flan-t5-base", max_length=256)
 
-    # Embed question and retrieve context
     query_embedding = embed_query(question, embed_model)
-    retrieved_chunks = retrieve_top_k(query_embedding, index, chunks, k=5)
-    context = "\n\n".join(retrieved_chunks)
+    retrieved_chunks = retrieve_top_k(query_embedding, index, chunks, k=10)
 
-    # Generate answer
+    # Apply product filter if selected
+    if product_filter and product_filter != "All":
+        filtered_chunks = [c for c in retrieved_chunks if product_filter.lower() in c.lower()]
+        if not filtered_chunks:
+            filtered_chunks = retrieved_chunks[:3]  # fallback if nothing matches
+    else:
+        filtered_chunks = retrieved_chunks
+
+    context = "\n\n".join(filtered_chunks)
     answer = generate_answer(context, question, llm)
 
-    return answer, retrieved_chunks
+    return answer, filtered_chunks
